@@ -1,0 +1,48 @@
+@startuml
+
+actor User
+actor Administrator
+participant "Online Movie Ticket Booking Platform"
+participant MovieDB
+
+=== Search ===
+    User -> System : GET/ movie/:id
+    System -> User : 200
+    System -> MovieDB : Retrieve the list of matching movies
+    MovieDB -> System: List of matching movies
+    System -> User: Display the list of matching movies
+    User -> System: Select a movie
+
+=== Available Movie showtimes ===
+    System -> MovieDB : POST/ movies
+    MovieDB -> System : 200
+    MovieDB -> System : Movie details and showtimes
+    System -> User : Display movie details and available showtimes
+    User -> System : Select a showtime
+    System -> MovieDB : Check seat availability
+    MovieDB -> System : Seat availability
+    System -> User : Choose seats
+    User -> System : Confirm seat selection
+
+=== Confirm the seats and reservation. ===
+    System -> MovieDB: Confirm seat availability and create reservation
+    MovieDB -> System: Reservation created
+    System -> User: Display reservation confirmation
+
+=== Proceed to checkout ===
+    User -> System: Proceed to checkout
+    System -> System: Process payment
+    System -> MovieDB: Update movie seat availability
+    MovieDB -> System: Seat availability updated
+    System -> User: Display payment confirmation
+
+=== Administrator ===
+    Administrator -> System: Login as admin
+    Administrator -> System: Add movie to database
+    System -> MovieDB: Save movie information
+    Administrator -> System: Remove movie from database
+    System -> MovieDB: Delete movie information
+    Administrator -> System: Manage movie showtimes
+    System -> MovieDB: Update movie showtimes
+
+@enduml
